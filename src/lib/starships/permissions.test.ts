@@ -14,6 +14,7 @@ describe('canManageStarship', () => {
   it('grants access by fleet role', () => {
     const user: AuthUser = {
       username: 'darthvader',
+      fullname: 'Darth Vader',
       faction: 'Galactic Empire',
       roles: ['dark_lord'],
     };
@@ -28,6 +29,7 @@ describe('canManageStarship', () => {
     };
     const user: AuthUser = {
       username: 'user',
+      fullname: 'Imperial User',
       faction: 'Galactic Empire',
       roles: ['logistics_officer'],
     };
@@ -38,6 +40,7 @@ describe('canManageStarship', () => {
   it('denies access when faction does not match even if roles match', () => {
     const user: AuthUser = {
       username: 'rebel-user',
+      fullname: 'Rebel User',
       faction: 'Rebel Alliance',
       roles: ['dark_lord'],
     };
@@ -52,6 +55,7 @@ describe('canManageStarship', () => {
     };
     const user: AuthUser = {
       username: 'user',
+      fullname: 'Imperial User',
       faction: 'Galactic Empire',
       roles: ['logistics_officer'],
     };

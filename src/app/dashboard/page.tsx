@@ -1,47 +1,42 @@
-"use client";
+import { StarshipsDashboard } from '@/components/dashboard/starships-dashboard';
+import { requireAuthenticatedUser } from '@/lib/api/require-auth-user';
+import {
+  DEFAULT_LIMIT,
+  DEFAULT_OFFSET,
+  getAccessibleStarships,
+  parseIntegerQueryParam,
+} from '@/lib/starships/accessible-starships';
+import { redirect } from 'next/navigation';
 
-import { RequireAuth } from "@/components/auth/require-auth";
-import { useAuthStore } from "@/lib/stores/auth-store";
-import { Badge, Button, Card, Heading, HStack, Stack, Text } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+interface DashboardPageProps {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
 
-export default function DashboardPage() {
-    const router = useRouter();
-    const user = useAuthStore((state) => state.user);
-    const logout = useAuthStore((state) => state.logout);
+export default async function DashboardPage({ searchParams }: DashboardPageProps) {
+  const user = await requireAuthenticatedUser();
 
-    const handleLogout = async () => {
-        await logout();
-        router.replace("/login");
-    };
+  if (!user) {
+    redirect('/login?redirect=%2Fdashboard');
+  }
 
-    return (
-        <RequireAuth>
-            <Stack minH="calc(100vh - 4rem)" align="center" justify="center" p={6}>
-                <Card.Root w="full" maxW="md" p={6}>
-                    <Card.Body>
-                        <Stack gap={4}>
-                            <Heading size="lg">Authenticated User</Heading>
-                            <Text>
-                                Username: <Text as="span" fontWeight="bold">{user?.username}</Text>
-                            </Text>
-                            <Stack gap={2}>
-                                <Text fontWeight="medium">Roles</Text>
-                                <HStack wrap="wrap" gap={2}>
-                                    {user?.roles?.map((role) => (
-                                        <Badge key={role} colorPalette="blue">
-                                            {role}
-                                        </Badge>
-                                    ))}
-                                </HStack>
-                            </Stack>
-                            <Button alignSelf="flex-start" variant="outline" onClick={() => void handleLogout()}>
-                                Log out
-                            </Button>
-                        </Stack>
-                    </Card.Body>
-                </Card.Root>
-            </Stack>
-        </RequireAuth>
-    );
+  const params = await searchParams;
+  const offset = parseIntegerQueryParam(
+    Array.isArray(params.offset) ? params.offset[0] : (params.offset ?? null),
+    DEFAULT_OFFSET,
+  );
+  const limit = parseIntegerQueryParam(
+    Array.isArray(params.limit) ? params.limit[0] : (params.limit ?? null),
+    DEFAULT_LIMIT,
+  );
+  const search = Array.isArray(params.search) ? params.search[0] : (params.search ?? '');
+  const fleet = Array.isArray(params.fleet) ? params.fleet[0] : (params.fleet ?? '');
+
+  const response = await getAccessibleStarships(user, {
+    offset,
+    limit,
+    search,
+    fleet,
+  });
+
+  return <StarshipsDashboard user={user} response={response} searchParams={params} />;
 }

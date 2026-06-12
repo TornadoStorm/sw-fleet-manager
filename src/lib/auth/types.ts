@@ -1,53 +1,54 @@
-import type { PlanetMetadata, StarshipMetadata } from "@/lib/swapi";
+import type { PlanetMetadata, StarshipMetadata } from '@/lib/swapi';
 
-export type Faction = "Rebel Alliance" | "Galactic Empire";
+export type Faction = 'Rebel Alliance' | 'Galactic Empire';
 
 export interface AuthUser {
-    username: string;
-    faction: Faction;
-    roles: string[];
+  username: string;
+  fullname: string;
+  faction: Faction;
+  roles: string[];
 }
 
 export interface LoginRequestBody {
-    username?: string;
-    password?: string;
+  username?: string;
+  password?: string;
 }
 
 export interface AuthSessionResponse {
-    user: AuthUser;
+  user: AuthUser;
 }
 
 export interface LoginErrorResponse {
-    error: string;
+  error: string;
 }
 
 export interface Fleet {
-    name: string;
-    faction: Faction;
-    managingRoles: string[];
+  name: string;
+  faction: Faction;
+  managingRoles: string[];
 }
 
 export interface Starship {
-    title: string;
-    modelId: number;
-    location: number;
-    roles: string[];
-    fleet: string;
+  title: string;
+  modelId: number;
+  location: number;
+  roles: string[];
+  fleet: string;
 }
 
 export interface StarshipWithMetadata extends Starship {
-    modelMetadata: StarshipMetadata | null;
-    locationMetadata: PlanetMetadata | null;
+  modelMetadata: StarshipMetadata | null;
+  locationMetadata: PlanetMetadata | null;
 }
 
 export interface StarshipPagination {
-    offset: number;
-    limit: number;
-    total: number;
-    hasMore: boolean;
+  offset: number;
+  limit: number;
+  total: number;
+  hasMore: boolean;
 }
 
 export interface ManageableStarshipsResponse {
-    items: StarshipWithMetadata[];
-    pagination: StarshipPagination;
+  items: StarshipWithMetadata[];
+  pagination: StarshipPagination;
 }

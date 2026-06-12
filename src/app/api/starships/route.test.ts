@@ -28,6 +28,7 @@ describe('GET /api/starships', () => {
   it('returns paginated manageable starships for authenticated users', async () => {
     const user: AuthUser = {
       username: 'user',
+      fullname: 'Imperial User',
       faction: 'Galactic Empire',
       roles: ['logistics_officer'],
     };
@@ -62,6 +63,7 @@ describe('GET /api/starships', () => {
   it('returns default pagination values for invalid query params', async () => {
     const user: AuthUser = {
       username: 'leia',
+      fullname: 'Leia Organa',
       faction: 'Rebel Alliance',
       roles: ['line_commander'],
     };
