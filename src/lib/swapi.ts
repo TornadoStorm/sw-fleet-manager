@@ -1,4 +1,4 @@
-const SWAPI_BASE_URL = 'https://swapi.info/api';
+const SWAPI_BASE_URL = 'http://swapi.py4e.com/api';
 const SWAPI_REVALIDATE_SECONDS = 60 * 60 * 24;
 
 async function fetchSwapi<T extends object = Record<string, unknown>>(
