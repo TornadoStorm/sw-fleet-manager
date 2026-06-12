@@ -52,7 +52,9 @@ export default function LoginPage() {
               <Stack gap={4}>
                 <Stack gap={1}>
                   <Heading size="lg">Sign in</Heading>
-                  <Text color="fg.muted">Use one of the mock server accounts.</Text>
+                  <Text color="fg.muted">
+                    Please enter your credentials to access the Star Wars Fleet Manager.
+                  </Text>
                 </Stack>
 
                 <Field.Root required>

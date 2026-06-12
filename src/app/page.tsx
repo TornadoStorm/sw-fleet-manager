@@ -15,20 +15,29 @@ export default function HomePage() {
         <Card.Body>
           <Stack gap={4}>
             <Heading size="lg">Fleet Manager</Heading>
-            <Text color="fg.muted">Welcome</Text>
+            {!isAuthenticated ? (
+              <Text color="fg.muted">
+                Welcome to the Star Wars Fleet Manager! Please log in to manage your fleet.
+              </Text>
+            ) : (
+              <Text color="fg.muted">
+                Welcome back, commander! Access your dashboard to manage your fleet.
+              </Text>
+            )}
             <Stack direction={{ base: 'column', sm: 'row' }} gap={3}>
               {!isAuthenticated ? (
                 <Button colorPalette="blue" onClick={() => router.push('/login')}>
                   Go to login
                 </Button>
-              ) : null}
-              <Button
-                variant="outline"
-                onClick={() => router.push('/dashboard')}
-                disabled={!isAuthenticated}
-              >
-                Open dashboard
-              </Button>
+              ) : (
+                <Button
+                  variant="outline"
+                  onClick={() => router.push('/dashboard')}
+                  disabled={!isAuthenticated}
+                >
+                  Open dashboard
+                </Button>
+              )}
             </Stack>
           </Stack>
         </Card.Body>
