@@ -16,7 +16,7 @@ export default async function DashboardPage({ searchParams }: DashboardPageProps
   const user = await requireAuthenticatedUser();
 
   if (!user) {
-    redirect('/login?redirect=%2Fdashboard');
+    redirect('/login');
   }
 
   const params = await searchParams;

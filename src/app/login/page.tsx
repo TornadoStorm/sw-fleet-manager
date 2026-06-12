@@ -1,41 +1,45 @@
 'use client';
 
 import { RedirectIfAuthenticated } from '@/components/auth/redirect-if-authenticated';
-import { useAuthStore } from '@/lib/stores/auth-store';
 import { Button, Card, Field, Heading, Input, Stack, Text } from '@chakra-ui/react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { SubmitEvent, useState } from 'react';
-
-function getSafeRedirectPath(redirectTo: string | null): string {
-  if (!redirectTo) {
-    return '/dashboard';
-  }
-
-  if (!redirectTo.startsWith('/') || redirectTo.startsWith('//')) {
-    return '/dashboard';
-  }
-
-  return redirectTo;
-}
 
 export default function LoginPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const login = useAuthStore((state) => state.login);
-  const clearError = useAuthStore((state) => state.clearError);
-  const isLoading = useAuthStore((state) => state.isLoading);
-  const error = useAuthStore((state) => state.error);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
-    clearError();
-    const success = await login(username.trim(), password);
+    setError(null);
+    setIsLoading(true);
 
-    if (success) {
-      router.replace(getSafeRedirectPath(searchParams?.get('redirect') ?? null));
+    try {
+      const result = await signIn('credentials', {
+        username: username.trim(),
+        password,
+        redirect: false,
+      });
+
+      if (result?.error) {
+        setError(
+          result.error === 'CredentialsSignin'
+            ? 'Invalid username or password.'
+            : 'Unable to log in.',
+        );
+        return;
+      }
+
+      router.replace('/dashboard');
+    } catch {
+      setError('Network error while logging in.');
+    } finally {
+      setIsLoading(false);
     }
   };
 

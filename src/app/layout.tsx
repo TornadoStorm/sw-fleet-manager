@@ -1,4 +1,3 @@
-import { AuthSessionBootstrap } from '@/components/auth/auth-session-bootstrap';
 import { Provider } from '@/components/ui/provider';
 import type { Metadata } from 'next';
 import './globals.css';
@@ -14,12 +13,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html suppressHydrationWarning>
+    <html className="dark">
       <body>
-        <Provider>
-          <AuthSessionBootstrap />
-          {children}
-        </Provider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );

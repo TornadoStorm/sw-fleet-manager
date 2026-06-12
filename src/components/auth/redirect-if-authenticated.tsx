@@ -1,7 +1,7 @@
 'use client';
 
-import { useAuthStore } from '@/lib/stores/auth-store';
 import { Box, Spinner } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { ReactNode, useEffect } from 'react';
 
@@ -11,18 +11,17 @@ interface RedirectIfAuthenticatedProps {
 
 export function RedirectIfAuthenticated({ children }: RedirectIfAuthenticatedProps) {
   const router = useRouter();
-  const hydrated = useAuthStore((state) => state.hydrated);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { status } = useSession();
 
   useEffect(() => {
-    if (!hydrated || !isAuthenticated) {
+    if (status !== 'authenticated') {
       return;
     }
 
     router.replace('/dashboard');
-  }, [hydrated, isAuthenticated, router]);
+  }, [status, router]);
 
-  if (!hydrated) {
+  if (status === 'loading') {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" minH="50vh">
         <Spinner size="lg" />
@@ -30,7 +29,7 @@ export function RedirectIfAuthenticated({ children }: RedirectIfAuthenticatedPro
     );
   }
 
-  if (isAuthenticated) {
+  if (status === 'authenticated') {
     return null;
   }
 

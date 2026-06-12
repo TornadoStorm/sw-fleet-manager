@@ -1,12 +1,13 @@
 'use client';
 
-import { useAuthStore } from '@/lib/stores/auth-store';
 import { Button, Card, Heading, Stack, Text } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const router = useRouter();
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const { status } = useSession();
+  const isAuthenticated = status === 'authenticated';
 
   return (
     <Stack minH="calc(100vh - 4rem)" align="center" justify="center" p={6}>

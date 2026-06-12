@@ -1,14 +1,18 @@
-import { AUTH_COOKIE_NAME, verifySessionToken } from '@/lib/auth/session';
 import type { AuthUser } from '@/lib/auth/types';
-import { cookies } from 'next/headers';
+import { auth } from '@/auth';
 
 export async function requireAuthenticatedUser(): Promise<AuthUser | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get(AUTH_COOKIE_NAME)?.value;
+  const session = await auth();
+  const user = session?.user;
 
-  if (!token) {
+  if (!user?.username || !user.fullname || !user.faction || !Array.isArray(user.roles)) {
     return null;
   }
 
-  return verifySessionToken(token);
+  return {
+    username: user.username,
+    fullname: user.fullname,
+    faction: user.faction,
+    roles: user.roles,
+  };
 }

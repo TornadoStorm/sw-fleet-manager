@@ -1,7 +1,6 @@
 'use client';
 
 import type { AuthUser, ManageableStarshipsResponse, StarshipWithMetadata } from '@/lib/auth/types';
-import { useAuthStore } from '@/lib/stores/auth-store';
 import {
   Avatar,
   Badge,
@@ -19,6 +18,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { signOut } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -196,7 +196,6 @@ function MetadataDialog({ triggerLabel, title, subtitle, entries }: MetadataDial
 
 export function StarshipsDashboard({ user, response, searchParams }: StarshipsDashboardProps) {
   const router = useRouter();
-  const logout = useAuthStore((state) => state.logout);
   const { items: starships, pagination } = response;
 
   // Initialize filter state from URL search params
@@ -283,7 +282,7 @@ export function StarshipsDashboard({ user, response, searchParams }: StarshipsDa
   ]);
 
   const handleLogout = async () => {
-    await logout();
+    await signOut({ redirect: false });
     router.replace('/login');
   };
 

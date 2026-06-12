@@ -9,19 +9,6 @@ export interface AuthUser {
   roles: string[];
 }
 
-export interface LoginRequestBody {
-  username?: string;
-  password?: string;
-}
-
-export interface AuthSessionResponse {
-  user: AuthUser;
-}
-
-export interface LoginErrorResponse {
-  error: string;
-}
-
 export interface Fleet {
   name: string;
   faction: Faction;
