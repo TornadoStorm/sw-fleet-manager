@@ -67,7 +67,11 @@ export function verifySessionToken(token: string | null | undefined): AuthUser |
     try {
         const payload = JSON.parse(fromBase64Url(encodedPayload)) as SessionPayload;
 
-        if (!payload.user?.username || !Array.isArray(payload.user.roles)) {
+        if (
+            !payload.user?.username ||
+            !payload.user?.faction ||
+            !Array.isArray(payload.user.roles)
+        ) {
             return null;
         }
 

@@ -19,7 +19,7 @@ describe("useAuthStore login", () => {
         vi.spyOn(globalThis, "fetch").mockResolvedValue({
             ok: true,
             json: async () => ({
-                user: { username: "captain", roles: ["admin"] },
+                user: { username: "captain", faction: "Rebel Alliance", roles: ["admin"] },
             }),
         } as unknown as Response);
 
@@ -29,7 +29,11 @@ describe("useAuthStore login", () => {
         expect(result).toBe(true);
         expect(state.isLoading).toBe(false);
         expect(state.isAuthenticated).toBe(true);
-        expect(state.user).toEqual({ username: "captain", roles: ["admin"] });
+        expect(state.user).toEqual({
+            username: "captain",
+            faction: "Rebel Alliance",
+            roles: ["admin"],
+        });
         expect(state.error).toBeNull();
         expect(state.hydrated).toBe(true);
     });
@@ -91,14 +95,20 @@ describe("useAuthStore initSession", () => {
     it("sets authenticated user when /api/me succeeds", async () => {
         vi.spyOn(globalThis, "fetch").mockResolvedValue({
             ok: true,
-            json: async () => ({ user: { username: "captain", roles: ["admin"] } }),
+            json: async () => ({
+                user: { username: "captain", faction: "Rebel Alliance", roles: ["admin"] },
+            }),
         } as unknown as Response);
 
         await useAuthStore.getState().initSession();
         const state = useAuthStore.getState();
 
         expect(state.isAuthenticated).toBe(true);
-        expect(state.user).toEqual({ username: "captain", roles: ["admin"] });
+        expect(state.user).toEqual({
+            username: "captain",
+            faction: "Rebel Alliance",
+            roles: ["admin"],
+        });
         expect(state.hydrated).toBe(true);
     });
 
@@ -140,7 +150,7 @@ describe("useAuthStore logout", () => {
             ...defaultState,
             hydrated: true,
             isAuthenticated: true,
-            user: { username: "captain", roles: ["admin"] },
+            user: { username: "captain", faction: "Rebel Alliance", roles: ["admin"] },
         });
 
         vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("failed"));
