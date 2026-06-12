@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useAuthStore } from "@/lib/stores/auth-store";
-import { useEffect } from "react";
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { useEffect } from 'react';
 
 export function AuthSessionBootstrap() {
-    const initSession = useAuthStore((state) => state.initSession);
+  const initSession = useAuthStore((state) => state.initSession);
 
-    useEffect(() => {
-        void initSession();
-    }, [initSession]);
+  useEffect(() => {
+    void initSession();
+  }, [initSession]);
 
-    return null;
+  return null;
 }

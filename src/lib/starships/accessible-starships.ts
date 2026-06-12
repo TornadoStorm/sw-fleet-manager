@@ -70,17 +70,10 @@ function fuzzyTokenMatch(haystack: string, needle: string): boolean {
   return needleIndex === needle.length;
 }
 
-function matchesSearchQuery(
-  starship: StarshipWithMetadata,
-  search: string,
-): boolean {
+function matchesSearchQuery(starship: StarshipWithMetadata, search: string): boolean {
   if (search) {
     const normalizedSearch = search.trim().toLowerCase();
-    const searchableText = [
-      starship.title,
-      starship.fleet,
-      starship.modelMetadata?.name,
-    ]
+    const searchableText = [starship.title, starship.fleet, starship.modelMetadata?.name]
       .filter(Boolean)
       .join(' ')
       .toLowerCase();

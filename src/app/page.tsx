@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useAuthStore } from "@/lib/stores/auth-store";
-import { Button, Card, Heading, Stack, Text } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { Button, Card, Heading, Stack, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/navigation';
 
 export default function HomePage() {
   const router = useRouter();
@@ -15,15 +15,15 @@ export default function HomePage() {
           <Stack gap={4}>
             <Heading size="lg">Fleet Manager</Heading>
             <Text color="fg.muted">Welcome</Text>
-            <Stack direction={{ base: "column", sm: "row" }} gap={3}>
+            <Stack direction={{ base: 'column', sm: 'row' }} gap={3}>
               {!isAuthenticated ? (
-                <Button colorPalette="blue" onClick={() => router.push("/login")}>
+                <Button colorPalette="blue" onClick={() => router.push('/login')}>
                   Go to login
                 </Button>
               ) : null}
               <Button
                 variant="outline"
-                onClick={() => router.push("/dashboard")}
+                onClick={() => router.push('/dashboard')}
                 disabled={!isAuthenticated}
               >
                 Open dashboard
